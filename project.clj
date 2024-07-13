@@ -5,5 +5,6 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [clj-http "3.13.0"]
-                 [ring/ring-codec "1.2.0"]]
+                 [ring/ring-codec "1.2.0"]
+                 [org.clojure/test.check "1.1.1"]]
   :repl-options {:init-ns clj-writing-macros.core})

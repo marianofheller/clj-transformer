@@ -128,9 +128,9 @@
                   (s/replace #"\:input->(\S)" "(:$1 input )")
                   (s/replace #"\:attr->(\S)" "(:result (get-attr-$1 input))"))]
     `(def ^:private ~fname
-       (memoize (fn [~'input] { :name ~attr-name :result ~(read-string tbody)})))))
+       (memoize (fn [~'input] {:name ~attr-name :result ~(read-string tbody)})))))
 
-(def ^:private sample-input {:a 17 :b 33 :c 2})
+;; (def sample-input {:a 17 :b 33 :c 2})
 
 (def-attribute :a :input->a)
 (def-attribute :b (* :input->b 3))
@@ -145,12 +145,15 @@
 ;; (get-attr-d sample-input)
 ;; (get-attr-e sample-input)
 
+(def ^:private getters
+  (let [this-ns (symbol (namespace ::x))
+        all-fns (keys (ns-publics this-ns))
+        f-names (filter #(s/starts-with? %1 "get-attr-") all-fns)]
+    (map #(ns-resolve this-ns (symbol %1)) f-names)))
+
 (defn get-output
   [input]
-  (let [all-fns (keys (ns-publics (symbol (namespace ::x))))
-        getters (filter #(s/starts-with? %1 "get-attr-") all-fns)
-        results (map #((resolve (symbol %1)) input) getters)]
+  (let [results (map #(%1 input) getters)]
     (reduce #(assoc %1 (:name %2) (:result %2)) {} results)))
 
-
-(get-output sample-input)
+;; (get-output sample-input)

@@ -68,13 +68,11 @@
 ;   ➍(enqueue saying (wait 400 "Pip pip!") (println @saying0))
 ;    (enqueue saying (wait 100 "Cheerio!") (println @saying0)))
 
-
 (defn search-youtube
   [input]
   (let [url  (str "https://www.google.com/search?btnI=1&q=" input)
         response (client/get url)]
     (last (:trace-redirects response))))
-
 
 (defn search-duckduckgo
   [input]
@@ -83,14 +81,12 @@
         extract-url (fn extract-url [body] (codec/url-decode (last (re-find #"replace\('\/l\/\?uddg=(.*)'\)" body))))]
     (extract-url (:body response))))
 
-
 (defn search
   [input]
   (let [result-google (future (search-youtube input))
         result-duckduckgo (future (search-duckduckgo input))]
     {:youtube @result-google
      :duckduckgo @result-duckduckgo}))
-
 
 (defn mmemoize [f]
   (let [mem (atom {})]
@@ -106,13 +102,11 @@
     n
     (+ (fib (dec n)) (fib (- n 2)))))
 
-
 (time (fib 35))
 
 (def fib-2 (mmemoize fib))
 
 (time (let [a (fib-2 35) b (fib-2 35)] b))
-
 
 ;; --------------------------------
 ;; a = input.a
@@ -148,12 +142,13 @@
 (def ^:private getters
   (let [this-ns (symbol (namespace ::x))
         all-fns (keys (ns-publics this-ns))
-        f-names (filter #(s/starts-with? %1 "get-attr-") all-fns)]
-    (map #(ns-resolve this-ns (symbol %1)) f-names)))
+        getter-names (filter #(s/starts-with? %1 "get-attr-") all-fns)]
+    (map #(ns-resolve this-ns (symbol %1)) getter-names)))
 
 (defn get-output
   [input]
   (let [results (map #(%1 input) getters)]
     (reduce #(assoc %1 (:name %2) (:result %2)) {} results)))
 
+(defn add [a b] (+ a b))
 ;; (get-output sample-input)

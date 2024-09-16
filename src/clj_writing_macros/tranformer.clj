@@ -68,7 +68,7 @@
 
 (do
   (def transformer-a (let [r (atom {})
-                           attr (fn [attr input] ((attr @r) input))
+                           attr (fn [k input] ((k @r) input))
                            def-attr (fn [key, f] (swap! r #(assoc %1 key (memoize f))))]
 
                        ;; Set up transformations

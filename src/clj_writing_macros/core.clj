@@ -1,4 +1,13 @@
-(ns clj-writing-macros.core)
+(ns clj-writing-macros.core
+  (:require [ring.adapter.jetty :refer [run-jetty]]
+            [clj-writing-macros.api :refer [app]]))
+
+
+
+(defn -main
+  [& _args]
+  (run-jetty app {:port 3000}))
+
   ;; (:require [clj-http.client :as client]
   ;;           [clojure.string :as s]
   ;;           [ring.util.codec :as codec]))

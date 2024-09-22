@@ -1,10 +1,10 @@
 # clj-writing-macros
 
-A Clojure library designed to ... well, that part is up to you.
 
-## Usage
-
-FIXME
+### TODO
+- Explore error handling
+- Refactor project structure
+- Migrate to deps.edn (https://github.com/metabase/metabase/wiki/Migrating-from-Leiningen-to-tools.deps)
 
 ## License
 

@@ -1,4 +1,4 @@
-(ns clj-writing-macros.tranformer
+(ns clj-writing-macros.domain.tranformer
   (:require
    [clojure.spec.alpha :as s]))
 
@@ -28,8 +28,21 @@
   (s/fdef transformer-a
     :args (s/and (s/cat :source :input/source)))
 
-  (defn transformer-a [source]
-    ;; {:pre [(s/valid? :input/source source)]}
-    (reduce-kv (fn [m k v]  (assoc m k (v {:source source}))) {} @r)))
+  (defn- _transformer [source]
+    (try
+      (reduce-kv (fn [m k v]  (assoc m k (v {:source source}))) {} @r)
+      (catch Exception _e
+        (throw
+         (ex-info "There was an error transforming." {:type :error-tranforming})))))
+
+  (defn transformer [source]
+    (if (s/valid?  :input/source source)
+      (_transformer source)
+      (throw
+       (ex-info "Invalid input. Cannot transform." {:type :invalid-input})))))
+
+
+;; {:pre [(s/valid? :input/source source)]}
+
 
 ;; (transformer-a {:a 1, :b 3, :c 3})

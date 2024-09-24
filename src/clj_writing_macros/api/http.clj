@@ -1,9 +1,9 @@
-(ns clj-writing-macros.api
+(ns clj-writing-macros.api.http
   (:require [hiccup2.core :as h]
             [ring.middleware.multipart-params :refer (wrap-multipart-params)]
             [ring.middleware.multipart-params.byte-array :refer (byte-array-store)]
-            [clj-writing-macros.sheet-parser :refer (parse-xslx)]
-            [clj-writing-macros.tranformer :refer (transformer-a)]
+            [clj-writing-macros.domain.sheet-parser :refer (parse-xslx)]
+            [clj-writing-macros.domain.tranformer :refer (transformer)]
             [compojure.core :as c]
             [compojure.route :as route]
             [compojure.handler :as handler]))
@@ -23,18 +23,35 @@
                    [:input {:type "submit" :value "Submit"}]]]]]))})
 
 
+(defn- handle-success [transformed-rows]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (str (h/html
+               (h/raw "<!DOCTYPE html>")
+               [:html {:lang "en"}
+                [:body
+                 [:div
+                  (map (fn [r] [:p (str r)]) transformed-rows)]]]))})
+
+
+(defn- handle-error [error]
+  {:status 400
+   :headers {"Content-Type" "text/html"}
+   :body (str (h/html
+               (h/raw "<!DOCTYPE html>")
+               [:html {:lang "en"}
+                [:body
+                 [:div (ex-message error)]]]))})
+
 (defn transform-output-page [request]
-  (let [finput (:finput (:params request))
-        parsed-rows (parse-xslx (:bytes finput))
-        transformed-rows (map transformer-a parsed-rows)]
-    {:status 200
-     :headers {"Content-Type" "text/html"}
-     :body (str (h/html
-                 (h/raw "<!DOCTYPE html>")
-                 [:html {:lang "en"}
-                  [:body
-                   [:div
-                    (map (fn [r] [:p (str r)]) transformed-rows)]]]))}))
+  (try
+    (->> request
+         ((comp :bytes :finput :params))
+         (parse-xslx)
+         (map transformer)
+         (handle-success))
+    (catch Exception error
+      (handle-error error))))
 
 (c/defroutes main-routes
   (c/GET "/" [] (transform-input-page))

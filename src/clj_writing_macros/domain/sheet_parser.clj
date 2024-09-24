@@ -1,4 +1,4 @@
-(ns clj-writing-macros.sheet-parser
+(ns clj-writing-macros.domain.sheet-parser
   (:require [clojure.java.io :as io]
             [clojure.walk :refer (keywordize-keys)])
   (:import
@@ -36,13 +36,6 @@
           attr-keys (parse-attr-keys (first rows))
           data-rows (drop 1 rows)]
       (map #(parse-data-row %1 attr-keys) data-rows))))
-
-
-    ;; (let [sheet (.getSheetAt wb 0)
-    ;;       rows (iterator-seq (.iterator sheet))
-    ;;       attr-keys (parse-attr-keys (nth (take 1 rows) 0))
-    ;;       data-rows (drop 3 rows)]
-    ;;   (map #(parse-data-row %1 attr-keys) data-rows))))
 
 ;; (println (parse-xslx "resources/sample.xlsx"))
 

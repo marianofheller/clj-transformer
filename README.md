@@ -2,9 +2,11 @@
 
 
 ### TODO
-- Explore error handling
-- Refactor project structure
+- Show formulas in UI
 - Migrate to deps.edn (https://github.com/metabase/metabase/wiki/Migrating-from-Leiningen-to-tools.deps)
+- DB?
+- auth
+- Explore error handling more?
 
 ## License
 

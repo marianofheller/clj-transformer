@@ -1,13 +1,13 @@
-(ns clj-writing-macros.tranformer-test
+(ns clj-writing-macros.domain.tranformer-test
   (:require
    [clj-writing-macros.test-utils :refer [defspec-test]]
    ;; [clojure.test :refer :all]
-   [clj-writing-macros.tranformer  :as t]))
+   [clj-writing-macros.domain.tranformer  :as t]))
 
 
 
 
-(defspec-test test-transformer-a `t/transformer-a)
+(defspec-test test-transformer-a `t/transformer)
 
 
 ;; (binding [*print-meta* true]

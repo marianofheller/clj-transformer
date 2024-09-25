@@ -1,14 +1,19 @@
 # clj-writing-macros
 
-
 ### TODO
+
 - Show formulas in UI
-- Migrate to deps.edn (https://github.com/metabase/metabase/wiki/Migrating-from-Leiningen-to-tools.deps)
 - DB?
 - auth
 - Explore error handling more?
 
-## License
+### Cheatsheet
+
+- clojure -M:run/service
+- clojure -X:test/run
+- clojure -X:test/watch
+
+### License
 
 Copyright © 2024 FIXME
 

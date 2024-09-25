@@ -5,8 +5,6 @@
    [clj-writing-macros.domain.tranformer  :as t]))
 
 
-
-
 (defspec-test test-transformer-a `t/transformer)
 
 

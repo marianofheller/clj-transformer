@@ -45,4 +45,4 @@
 ;; {:pre [(s/valid? :input/source source)]}
 
 
-;; (transformer-a {:a 1, :b 3, :c 3})
+;; (transformer {:a 1, :b 3, :c 3})

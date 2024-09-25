@@ -12,5 +12,6 @@ pom.xml.asc
 /.lsp
 /.nrepl-port
 /.prepl-port
+/.cpcache
 .hgignore
 .hg/

@@ -1,7 +1,6 @@
-(ns clj-writing-macros.domain.tranformer
+(ns clj-writing-macros.domain.transformer
   (:require
    [clojure.spec.alpha :as s]))
-
 
 (let [r (atom (array-map))
       attr (fn [k input] ((k @r) input))
@@ -14,8 +13,7 @@
   (def-attr :d (fn [input] (*' (attr :c input) (attr :c input))))
   (def-attr :e (fn [{source :source :as input}] (/  (attr :d input) (:c source))))
 
-
-   ;; Set up input constraints
+  ;; Set up input constraints
   (s/def :source/a number?)
   (s/def :source/b number?)
   (s/def :source/c (s/and number? #(> % 0)))
@@ -41,8 +39,6 @@
       (throw
        (ex-info "Invalid input. Cannot transform." {:type :invalid-input})))))
 
-
 ;; {:pre [(s/valid? :input/source source)]}
-
 
 ;; (transformer {:a 1, :b 3, :c 3})

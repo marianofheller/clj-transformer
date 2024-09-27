@@ -2,6 +2,8 @@
 
 ### TODO
 
+- Observability
+- remote repl
 - Show formulas in UI
 - DB?
 - auth
@@ -12,6 +14,8 @@
 - clojure -M:run/service
 - clojure -X:test/run
 - clojure -X:test/watch
+- clj -M:repl/conjure
+
 
 ### License
 

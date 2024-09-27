@@ -1,4 +1,4 @@
-(ns clj-writing-macros.domain.tranformer-test
+(ns clj-writing-macros.domain.transformer-test
   (:require
    [clj-writing-macros.test-utils :refer [defspec-test]]
    ;; [clojure.test :refer :all]

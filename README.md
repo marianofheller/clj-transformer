@@ -3,31 +3,32 @@
 ### TODO
 
 - Observability
+  - https://logback.qos.ch/manual/introduction.html
 - remote repl
 - Show formulas in UI
 - DB?
 - auth
 - Explore error handling more?
 
-### Cheatsheet
+### Useful commands
 
 - clojure -M:run/service
+- clojure -M:otel:run/service
 - clojure -X:test/run
-- clojure -X:test/watch
-- clj -M:repl/conjure
 
+### Other stuff
 
-### License
+```clojure
 
-Copyright © 2024 FIXME
-
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+(defn- download-file [url out-dir]
+  (let [my-file (last (.split url "/"))
+        out-path (str out-dir "/" my-file)]
+    (if-not (.exists  (io/as-file out-path))
+      (do
+        (.mkdirs (java.io.File. out-dir))
+        (future (with-open [in (io/input-stream url)
+                            out (io/output-stream out-path)]
+                  (io/copy in out)
+                  (println  my-file " has been downloaded."))))
+      (print my-file "is already there"))))
+```

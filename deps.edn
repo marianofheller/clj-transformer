@@ -12,6 +12,7 @@
   compojure/compojure {:mvn/version "1.7.1"},
 
   ;; Logging
+  org.clojure/tools.logging {:mvn/version "1.3.0"},
   ch.qos.logback/logback-classic {:mvn/version "1.5.8"},
   org.apache.logging.log4j/log4j-to-slf4j {:mvn/version "2.24.0"},
 
@@ -24,16 +25,21 @@
   org.apache.poi/poi-ooxml {:mvn/version "5.3.0"}}
 
  :aliases
- {;; Clojure.main execution of application
+ {;; Build tools
+  :build {:deps {io.github.clojure/tools.build {:git/tag "v0.9.6" :git/sha "8e78bcc"}}
+          :ns-default build}
+
+  ;; OpenTelemetry
+  :otel  {:jvm-opts ["-javaagent:./opentelemetry-javaagent.jar"
+                     "-Dotel.resource.attributes=service.name=app-name"
+                     "-Dotel.logs.exporter=none"
+                     "-Dotel.metric.export.interval=5000"]}
+
+  ;; Clojure.main execution of application
   :run/service
   {:main-opts ["-m" "clj-writing-macros.core"]}
 
-  ;; Add libraries and paths to support additional test tools
-  :test/env
-  {}
-
-  ;; Test runner - local and CI
-  ;; call with :watch? true to start file watcher and re-run tests on saved changes
+  ;; Test runner - call with :watch? true to start file watcher and re-run tests on saved changes
   :test/run
   {:extra-paths ["test"]
    :extra-deps  {lambdaisland/kaocha {:mvn/version "1.85.1342"}}
@@ -42,25 +48,10 @@
    :exec-args   {:randomize? false
                  :fail-fast? true}}
 
-  :test/watch
-  {:extra-paths ["test"]
-   :extra-deps  {lambdaisland/kaocha {:mvn/version "1.85.1342"}}
-   :main-opts   ["-m" "kaocha.runner"]
-   :exec-fn     kaocha.runner/exec-fn
-   :exec-args   {:randomize? false
-                 :watch? true
-                 :fail-fast? true}}
-
   ;; Basic REPL UI with nREPL server for Clojure Editor support
   :repl/basic
   {:extra-deps {nrepl/nrepl       {:mvn/version "1.3.0"}
                 cider/cider-nrepl {:mvn/version "0.50.2"}}
-   :main-opts  ["--main" "nrepl.cmdline"
-                "--middleware" "[cider.nrepl/cider-middleware]"
-                "--interactive"]}
-  :repl/conjure
-  {:extra-deps {nrepl/nrepl       {:mvn/version "1.0.0"}
-                cider/cider-nrepl {:mvn/version "0.42.1"}}
    :main-opts  ["--main" "nrepl.cmdline"
                 "--middleware" "[cider.nrepl/cider-middleware]"
                 "--interactive"]}}
